@@ -1,0 +1,26 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "axios": "^1.1.2",
+        "laravel-vite-plugin": "^0.7.5",
+        "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "@vitejs/plugin-vue": "^4.2.3",
+        "@vue/compiler-sfc": "^3.3.2",
+        "flatpickr": "^4.6.13",
+        "laravel-vue-pagination": "^4.1.0",
+        "moment": "^2.29.4",
+        "tiny-emitter": "^2.1.0",
+        "vee-validate": "^4.5.8",
+        "vue": "^3.2.36",
+        "vue-loader": "^17.0.1",
+        "vue-router": "^4.2.0",
+        "vue-yup-validation": "^0.0.3"
+    }
+}

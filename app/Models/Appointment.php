@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\AppointmentStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\hasMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
+class Appointment extends Model
+{
+    use HasFactory;
+
+    protected $guarded = [];
+
+    protected $appends = ['formatted_start_time', 'formatted_end_time'];
+
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+        'status' => AppointmentStatus::class,
+    ];
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function getClients(): hasMany
+    {
+        return $this->hasMany(Client::class, 'id', 'client_id');
+    }
+
+    public function formattedStartTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->start_time->format('Y-m-d h:i A'),
+        );
+    }
+
+    public function formattedEndTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->end_time->format('Y-m-d h:i A'),
+        );
+    }
+
+    public function scopeSearchAppointment($query, $searchQuery){
+        return $query->whereHas('getClients', function($q) use ($searchQuery){
+            $q->where('first_name', 'like', "%{$searchQuery}%")->orWhere('last_name', 'like', "%{$searchQuery}%");
+
+        })->orWhere('title', 'like', "%{$searchQuery}%");
+    }
+
+
+
+}
